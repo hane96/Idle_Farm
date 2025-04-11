@@ -12,33 +12,34 @@ def run_pomodoro(state):
     choice = input("Choose an option: ")
     
     if choice == "1":
-        duration = 10
+        duration = 10  #5
         reward = 2
     elif choice == "2":
-        duration = 15
+        duration = 15  #5
         reward = 3
     elif choice == "3":
-        duration = 30
+        duration = 30  #3.75
         reward = 8
     elif choice == "4":
-        duration = 40
-        reward = 11
+        duration = 40 #3.33
+        reward = 12
     elif choice == "5":
-        duration = 60
-        reward = 18
+        duration = 60  #3
+        reward = 20
     else:
         print("Invalid choice. Using 10 minutes by default.")
         duration = 10
         reward = 2
+    try:
+        print(f"\n Pomodoro Timer started for {duration} minutes!")
+        for i in range(duration , 0, -1):  #turn into seconds 測試中 之後記得改回duration*60
+            minutes, seconds = divmod(i, 60)
+            print(f" {minutes:02}:{seconds:02} remaining...", end="\r")
+            time.sleep(1)
 
-    print(f"\n🍅 Pomodoro Timer started for {duration} minutes!")
-    for i in range(duration * 60, 0, -1):  #turn into seconds
-        minutes, seconds = divmod(i, 60)
-        print(f"⏳ {minutes:02}:{seconds:02} remaining...", end="\r")
-        time.sleep(1)
-
-    print("\n✅ Pomodoro session complete!")
-    state.add_resource(reward)
-    print(f"🎉 You earned {reward} resource(s)! Current: {state.resources}")
-
+        print("\n✅ Pomodoro session complete!")
+        state.add_resource(reward)
+        print(f" You earned {reward} resource(s)! Current: {state.resources}")
+    except KeyboardInterrupt:
+        print("\n ⚠️  session interrupted. No resources earned.")
 

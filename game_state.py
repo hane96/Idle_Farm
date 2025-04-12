@@ -22,11 +22,12 @@ class GameState:
             self.save() #create new data
 
     def save(self):
-        with open("save.json", "w") as f:
+        with open(DATA_FILE, "w") as f:
             json.dump({
                 "resources": self.resources,
-                "item": [item.to_dict() for item in self.item]
-            }, f, indent=2) #turning pyhton into json, then write into file
+                "item": [item.to_dict() for item in self.item],
+                "pomodoro_count": self.pomodoro_count
+            }, f, indent=2) #turning python into json, then write into file
 
     def add_resource(self, amount=1): #resource control
         self.resources += amount
@@ -41,7 +42,7 @@ class GameState:
         print(f"Pomodoro sessions completed: {self.pomodoro_count} times")
 
     def passive_gain(self): #passive gain
-        total = sum(item.passive_rate for item in self.item)
+        total = sum( (item.passive_rate*item.amount) for item in self.item)
         self.resources += total
         if total > 0:
             print(f"\n Passive +{total} resource(s). Current: {self.resources}")
